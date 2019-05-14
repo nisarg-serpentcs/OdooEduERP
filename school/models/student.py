@@ -35,6 +35,18 @@ class StudentStudent(models.Model):
             partner_name += " " + rec.middle if rec.middle else ""
             partner_name += " " + rec.last if rec.last else ""
             rec.full_name = partner_name
+            # if rec.middle:
+            #     partner_name = ""
+            #     partner_name += rec.stu_name if rec.stu_name else ""
+            #     partner_name += " " + rec.middle if rec.middle else ""
+            #     partner_name += " " + rec.last if rec.last else ""
+            #     rec.full_name = partner_name
+            # else:
+            #     partner_name = ""
+            #     partner_name += rec.stu_name if rec.stu_name else ""
+            #     partner_name += " " + rec.last if rec.last else ""
+            #     rec.full_name = partner_name
+
 
     @api.model
     def _search(self, args, offset=0, limit=None, order=None, count=False,
