@@ -24,6 +24,22 @@ class StudentStudent(models.Model):
     _name = 'student.student'
     _table = "student_student"
     _description = 'Student Information'
+    _rec_name = 'full_name'
+
+    @api.depends('stu_name', 'middle', 'last')
+    def _compute_full_name(self):
+        for rec in self:
+            if rec.middle:
+                partner_name = ""
+                partner_name += rec.stu_name if rec.stu_name else ""
+                partner_name += " " + rec.middle if rec.middle else ""
+                partner_name += " " + rec.last if rec.last else ""
+                rec.full_name = partner_name
+            else:
+                partner_name = ""
+                partner_name += rec.stu_name if rec.stu_name else ""
+                partner_name += " " + rec.last if rec.last else ""
+                rec.full_name = partner_name
 
     @api.model
     def _search(self, args, offset=0, limit=None, order=None, count=False,
@@ -170,8 +186,8 @@ class StudentStudent(models.Model):
     relation = fields.Many2one('student.relation.master', 'Relation')
 
     admission_date = fields.Date('Admission Date', default=date.today())
-    middle = fields.Char('Middle Name', required=True,
-                         states={'done': [('readonly', True)]})
+    full_name = fields.Char(compute='_compute_full_name', string='Full Name')
+    middle = fields.Char('Middle Name', states={'done': [('readonly', True)]})
     last = fields.Char('Surname', required=True,
                        states={'done': [('readonly', True)]})
     gender = fields.Selection([('male', 'Male'), ('female', 'Female')],

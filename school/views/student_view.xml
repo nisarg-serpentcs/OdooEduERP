@@ -98,8 +98,8 @@
                               </group>
                         </page>
                         <page string="Parents">
-                            <field name="parent_id" 
-                                        attrs="{'readonly':[('state','in',['alumni','terminate'])]}" 
+                            <field name="parent_id"
+                                        attrs="{'readonly':[('state','in',['alumni','terminate'])]}"
                                         context="{'form_view_ref':'school.view_parent_form','default_parent_school':1}"
                                         options="{&quot;no_open&quot;: True, &quot;no_create&quot;: True}"/>
                         </page>
@@ -427,24 +427,28 @@
                     <div class="oe_inline">
                         <newline />
                         <separator string="Personal Information" />
+                        <newline />
+                        <field name="pid" class="oe_inline" nolabel="1" readonly="1"/>
+                        <br></br>
                         <field name="photo" widget="image" class="oe_avatar oe_left" style="max-width:100px;max-height:117px;" />
                         <div class="oe_title">
                             <group>
-                                <field name="pid" nolabel="1" readonly="1"/>
-                                <br />
-                                <field name="name" placeholder="First Name" nolabel="1" required="1" attrs="{'readonly':[('state','=','alumni')]}"/>
-                                <br />
-                                <field name="middle" placeholder="Middle Name" nolabel="1" attrs="{'readonly':[('state','=','alumni')]}"/>
-                                <br />
-                                <field name="last" placeholder="Last Name" nolabel="1" attrs="{'readonly':[('state','=','alumni')]}"/>
-                                <br/>
+                                <field name="name" class="oe_edit_only" placeholder="First Name" nolabel="1" required="1" attrs="{'readonly':[('state','=','alumni')]}"/>
+                                <newline />
+                                <field name="middle" class="oe_edit_only" placeholder="Middle Name" nolabel="1" attrs="{'readonly':[('state','=','alumni')]}"/>
+                                <newline />
+                                <field name="last" class="oe_edit_only" placeholder="Last Name" nolabel="1" attrs="{'readonly':[('state','=','alumni')]}"/>
+                                <newline />
                                 <field name="active" invisible="1"/>
+                                <newline />
+                                <field name="full_name" class="oe_read_only" nolabel="1" required="1" attrs="{'readonly':[('state','=','alumni')]}"/>
+                                <newline />
                             </group>
                         </div>
                     </div>
                     <group>
                         <group string="School Information">
-                            <field name="school_id" placeholder="School Name" required="1" 
+                            <field name="school_id" placeholder="School Name" required="1"
                                 attrs="{'readonly':[('state','=','alumni')]}" options="{&quot;no_open&quot;: True, &quot;no_create&quot;: True}"/>
                             <field name="year" widget="selection" placeholder="Academic Year" readonly="1"/>
                             <field name="company_id" invisible="1"/>
@@ -453,7 +457,7 @@
                             <field name="medium_id" placeholder="Medium" widget="selection" attrs="{'readonly':[('state','=','alumni')]}"/>
                             <field name="standard_id" placeholder="Class" domain="[('school_id','=',school_id),('medium_id','=',medium_id)]" widget="selection" attrs="{'readonly':[('state','=','alumni')]}"/>
                             <field name="division_id" placeholder="Division" widget="selection" attrs="{'readonly':[('state','=','alumni')]}" invisible="1"/>
-                            
+
                         </group>
                     </group>
                     <group colspan="4">
@@ -594,7 +598,7 @@
         <field name="arch" type="xml">
             <tree string="Admission Register">
                 <field name="pid" />
-                <field name="name" />
+                <field name="full_name" />
                 <field name="student_name" invisible="1" />
                 <field name="year" widget="selection" />
                 <field name="standard_id" widget="selection" />
