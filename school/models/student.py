@@ -29,6 +29,16 @@ class StudentStudent(models.Model):
     _name = 'student.student'
     _table = "student_student"
     _description = 'Student Information'
+    _rec_name = 'full_name'
+
+    @api.depends('stu_name', 'middle', 'last')
+    def _compute_full_name(self):
+        for rec in self:
+            partner_name = ""
+            partner_name += rec.stu_name if rec.stu_name else ""
+            partner_name += " " + rec.middle if rec.middle else ""
+            partner_name += " " + rec.last if rec.last else ""
+            rec.full_name = partner_name
 
     @api.multi
     @api.depends('date_of_birth')
@@ -168,6 +178,7 @@ class StudentStudent(models.Model):
     relation = fields.Many2one('student.relation.master', 'Relation')
 
     admission_date = fields.Date('Admission Date', default=date.today())
+    full_name = fields.Char(compute='_compute_full_name', string='Full Name')
     middle = fields.Char('Middle Name', required=True,
                          states={'done': [('readonly', True)]})
     last = fields.Char('Surname', required=True,
