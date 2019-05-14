@@ -7,6 +7,7 @@ from odoo.exceptions import ValidationError, Warning as UserError
 from odoo.tools import DEFAULT_SERVER_DATE_FORMAT,\
     DEFAULT_SERVER_DATETIME_FORMAT
 from dateutil.relativedelta import relativedelta as rd
+import dateutil.parser
 
 
 class LibraryRack(models.Model):
@@ -361,6 +362,11 @@ class LibraryBookIssue(models.Model):
 
     @api.constrains('card_id', 'name')
     def check_book_issue(self):
+        curr_dt = self.date_issue
+        issue_date = dateutil.parser.parse(curr_dt).date().strftime(DEFAULT_SERVER_DATE_FORMAT)
+        if self.card_id.start_date > issue_date or self.card_id.end_date < issue_date:
+            raise ValidationError(_('''The Membership of library card is
+            over!'''))
         book_issue = self.search([('name', '=', self.name.id),
                                   ('id', 'not in', self.ids),
                                   ('card_id', '=', self.card_id.id),
@@ -369,7 +375,6 @@ class LibraryBookIssue(models.Model):
         if book_issue:
             raise ValidationError(_('''You cannot issue same book on
                                     same card more than once at same time!'''))
-
     @api.model
     def create(self, vals):
         '''Override create method'''
@@ -699,16 +704,16 @@ class LibraryBookRequest(models.Model):
     active = fields.Boolean(default=True, help='''Set active to false to hide
     the category without removing it.''')
 
-    @api.constrains('card_id', 'name')
-    def check_book_request(self):
-        book_request = self.search([('card_id', '=', self.card_id.id),
-                                    ('name', '=', self.name.id),
-                                    ('id', 'not in', self.ids),
-                                    ('type', '=', 'existing')])
-        if book_request:
-            raise ValidationError(_('''You cannot request same book on same
-                                    card number more than once at same time!'''
-                                    ))
+    # @api.constrains('card_id', 'name')
+    # def check_book_request(self):
+    #     book_request = self.search([('card_id', '=', self.card_id.id),
+    #                                 ('name', '=', self.name.id),
+    #                                 ('id', 'not in', self.ids),
+    #                                 ('type', '=', 'existing')])
+    #     if book_request:
+    #         raise ValidationError(_('''You cannot request same book on same
+    #                                 card number more than once at same time!'''
+    #                                 ))
 
     @api.model
     def create(self, vals):
@@ -726,14 +731,7 @@ class LibraryBookRequest(models.Model):
     def confirm_book_request(self):
         '''Method to confirm book request'''
         book_issue_obj = self.env['library.book.issue']
-        curr_dt = datetime.now()
-        new_date = datetime.strftime(curr_dt,
-                                     DEFAULT_SERVER_DATETIME_FORMAT)
         vals = {}
-        if (new_date >= self.card_id.start_date and
-                new_date <= self.card_id.end_date):
-                raise ValidationError(_('''The Membership of library card is
-                over!'''))
         if self.type == 'existing':
             vals.update({'card_id': self.card_id.id,
                          'name': self.name.id})
