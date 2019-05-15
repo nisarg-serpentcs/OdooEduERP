@@ -35,18 +35,6 @@ class StudentStudent(models.Model):
             partner_name += " " + rec.middle if rec.middle else ""
             partner_name += " " + rec.last if rec.last else ""
             rec.full_name = partner_name
-            # if rec.middle:
-            #     partner_name = ""
-            #     partner_name += rec.stu_name if rec.stu_name else ""
-            #     partner_name += " " + rec.middle if rec.middle else ""
-            #     partner_name += " " + rec.last if rec.last else ""
-            #     rec.full_name = partner_name
-            # else:
-            #     partner_name = ""
-            #     partner_name += rec.stu_name if rec.stu_name else ""
-            #     partner_name += " " + rec.last if rec.last else ""
-            #     rec.full_name = partner_name
-
 
     @api.model
     def _search(self, args, offset=0, limit=None, order=None, count=False,
@@ -113,6 +101,9 @@ class StudentStudent(models.Model):
             vals.update(company_vals)
         if vals.get('email'):
             school.emailvalidation(vals.get('email'))
+        record = self.search([('roll_no', '=', vals.get('roll_no')), ('standard_id', '=', vals.get('standard_id'))], limit=1)
+        if record.id:
+            raise ValidationError(_('Student Roll Numer. must be unique.!'))
         res = super(StudentStudent, self).create(vals)
         teacher = self.env['school.teacher']
         for data in res.parent_id:
@@ -141,6 +132,10 @@ class StudentStudent(models.Model):
                                                '=', parent)])
                 for data in teacher_rec:
                     data.write({'student_id': [(4, self.id)]})
+        rec = self.search([('standard_id', '=', self.standard_id.id),
+                           ('roll_no', '=', vals.get('roll_no'))], limit=1)
+        if rec.id:
+            raise ValidationError(_('Student Roll Numer. must be unique.!'))
         return super(StudentStudent, self).write(vals)
 
     @api.model
@@ -188,7 +183,7 @@ class StudentStudent(models.Model):
     student_code = fields.Char('Student Code')
     contact_phone1 = fields.Char('Phone no.',)
     contact_mobile1 = fields.Char('Mobile no',)
-    roll_no = fields.Integer('Roll No.', readonly=True)
+    roll_no = fields.Integer('Roll No.')
     photo = fields.Binary('Photo', default=_default_image)
     year = fields.Many2one('academic.year', 'Academic Year', readonly=True,
                            default=check_current_year)
@@ -197,8 +192,7 @@ class StudentStudent(models.Model):
 
     admission_date = fields.Date('Admission Date', default=date.today())
     full_name = fields.Char(compute='_compute_full_name', string='Full Name')
-    middle = fields.Char('Middle Name', required=True,
-                         states={'done': [('readonly', True)]})
+    middle = fields.Char('Middle Name', states={'done': [('readonly', True)]})
     last = fields.Char('Surname', required=True,
                        states={'done': [('readonly', True)]})
     gender = fields.Selection([('male', 'Male'), ('female', 'Female')],
