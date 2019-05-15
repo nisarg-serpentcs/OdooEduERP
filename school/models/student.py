@@ -168,7 +168,7 @@ class StudentStudent(models.Model):
     student_code = fields.Char('Student Code')
     contact_phone1 = fields.Char('Phone no.',)
     contact_mobile1 = fields.Char('Mobile no',)
-    roll_no = fields.Integer('Roll No.', readonly=True)
+    roll_no = fields.Integer('Roll No.')
     photo = fields.Binary('Photo', default=lambda self: self._get_default_image
                           (self._context.get('default_is_company',
                                              False)))
@@ -179,8 +179,7 @@ class StudentStudent(models.Model):
 
     admission_date = fields.Date('Admission Date', default=date.today())
     full_name = fields.Char(compute='_compute_full_name', string='Full Name')
-    middle = fields.Char('Middle Name', required=True,
-                         states={'done': [('readonly', True)]})
+    middle = fields.Char('Middle Name', states={'done': [('readonly', True)]})
     last = fields.Char('Surname', required=True,
                        states={'done': [('readonly', True)]})
     gender = fields.Selection([('male', 'Male'), ('female', 'Female')],
@@ -266,6 +265,7 @@ class StudentStudent(models.Model):
     teachr_user_grp = fields.Boolean("Teacher Group",
                                      compute="_compute_teacher_user",
                                      )
+    _sql_constraints = [('roll_no_key', 'UNIQUE (roll_no)',  'Student Roll Numer. must be unique.!')]
 
     @api.multi
     def set_to_draft(self):
