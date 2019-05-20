@@ -38,7 +38,7 @@
                     <group>
                         <group string="Student Information">
                             <field name="student_code" readonly="1" />
-                            <field name="roll_no" help="Roll number of Student" readonly="1"/>
+                            <field name="roll_no" help="Roll number of Student"/>
                             <field name="year" placeholder="Year" widget="selection" help="Academic year of Student" attrs="{'readonly':['|',('state','in',['alumni','terminate']),('teachr_user_grp','=',True)]}"/>
                             <field name="school_id" placeholder="School" widget="selection" help="School of Student" attrs="{'readonly':['|',('state','in',['alumni','terminate']),('teachr_user_grp','=',True)]}"/>
                         </group>
