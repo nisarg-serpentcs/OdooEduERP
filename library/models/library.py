@@ -361,8 +361,7 @@ class LibraryBookIssue(models.Model):
     @api.constrains('card_id', 'name')
     def check_book_issue(self):
         curr_dt = self.date_issue
-        issue_date = dateutil.parser.parse(curr_dt.strftime(DEFAULT_SERVER_DATETIME_FORMAT)).date().strftime(DEFAULT_SERVER_DATE_FORMAT)
-        if self.card_id.start_date.strftime(DEFAULT_SERVER_DATE_FORMAT) > issue_date or self.card_id.end_date.strftime(DEFAULT_SERVER_DATE_FORMAT) < issue_date:
+        if self.card_id.start_date > self.date_issue.date() and self.card_id.end_date < self.date_issue.date():
             raise ValidationError(_('''The Membership of library card is
             over!'''))
         book_issue = self.search([('name', '=', self.name.id),
@@ -696,17 +695,6 @@ class LibraryBookRequest(models.Model):
     ebook_name = fields.Many2one('product.product', 'E book Name')
     active = fields.Boolean(default=True, help='''Set active to false to hide
     the category without removing it.''')
-
-    # @api.constrains('card_id', 'name')
-    # def check_book_request(self):
-    #     book_request = self.search([('card_id', '=', self.card_id.id),
-    #                                 ('name', '=', self.name.id),
-    #                                 ('id', 'not in', self.ids),
-    #                                 ('type', '=', 'existing')])
-    #     if book_request:
-    #         raise ValidationError(_('''You cannot request same book on same
-    #                                 card number more than once at same time!'''
-    #                                 ))
 
     @api.model
     def create(self, vals):
