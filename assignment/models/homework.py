@@ -44,6 +44,10 @@ class SchoolTeacherAssignment(models.Model):
     attach_files = fields.Char("File Name")
     subject_standard_assignment = fields.Many2one("standard.standard")
 
+    @api.onchange('standard_id')
+    def onchange_subject_standard(self):
+        self.subject_standard_assignment = self.standard_id.standard_id.id
+
     @api.onchange('standard_id', 'teacher_id')
     def onchange_stamdard_id(self):
         if self.standard_id and self.teacher_id:
