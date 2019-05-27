@@ -360,8 +360,7 @@ class LibraryBookIssue(models.Model):
 
     @api.constrains('card_id', 'name')
     def check_book_issue(self):
-        curr_dt = self.date_issue
-        if self.card_id.start_date > self.date_issue.date() and self.card_id.end_date < self.date_issue.date():
+        if self.card_id.start_date > self.date_issue.date() or self.card_id.end_date < self.date_issue.date():
             raise ValidationError(_('''The Membership of library card is
             over!'''))
         book_issue = self.search([('name', '=', self.name.id),
