@@ -506,7 +506,7 @@
             <field name="name">12th-A</field>
             <field name="capacity">30</field>
         </record>
-        
+
         Subject Information
         <record id="demo_subject_subject_1" model="subject.subject">
             <field name="name">Mathematics</field>
@@ -636,7 +636,7 @@
             <field name="pid">New</field>
             <field name="date_of_birth" eval="(DateTime.today() - relativedelta(years=15)).strftime('%Y-03-24 %H:%M')"/>
             <field name="gender">male</field>
-            <field name="roll_no">2</field>
+            <field name="roll_no">3</field>
             <field name="school_id" ref="demo_school_1"/>
             <field name="country_id" ref="base.uk"/>
             <field name="city">Manchester</field>
@@ -672,7 +672,7 @@
             <field name="pid">New</field>
             <field name="date_of_birth" eval="(DateTime.today() - relativedelta(years=13)).strftime('%Y-06-02 %H:%M')"/>
             <field name="gender">female</field>
-            <field name="roll_no">3</field>
+            <field name="roll_no">9</field>
             <field name="school_id" ref="demo_school_1"/>
             <field name="country_id" ref="base.za"/>
             <field name="city">Johesburg</field>
@@ -690,7 +690,7 @@
             <field name="pid">New</field>
             <field name="date_of_birth" eval="(DateTime.today() - relativedelta(years=15)).strftime('%Y-06-06 %H:%M')"/>
             <field name="gender">female</field>
-            <field name="roll_no">3</field>
+            <field name="roll_no">4</field>
             <field name="school_id" ref="demo_school_1"/>
             <field name="country_id" ref="base.za"/>
             <field name="city">CapeTown</field>
@@ -707,7 +707,7 @@
             <field name="pid">New</field>
             <field name="date_of_birth" eval="(DateTime.today() - relativedelta(years=11)).strftime('%Y-04-03 %H:%M')"/>
             <field name="gender">female</field>
-            <field name="roll_no">1</field>
+            <field name="roll_no">5</field>
             <field name="school_id" ref="demo_school_1"/>
             <field name="country_id" ref="base.au"/>
             <field name="city">Melbourne</field>
@@ -724,7 +724,7 @@
             <field name="pid">New</field>
             <field name="date_of_birth" eval="(DateTime.today() - relativedelta(years=12)).strftime('%Y-02-14 %H:%M')"/>
             <field name="gender">male</field>
-            <field name="roll_no">1</field>
+            <field name="roll_no">6</field>
             <field name="school_id" ref="demo_school_1"/>
             <field name="country_id" ref="base.au"/>
             <field name="city">Sydney</field>
@@ -741,7 +741,7 @@
             <field name="pid">New</field>
             <field name="date_of_birth" eval="(DateTime.today() - relativedelta(years=11)).strftime('%Y-09-24 %H:%M')"/>
             <field name="gender">male</field>
-            <field name="roll_no">1</field>
+            <field name="roll_no">7</field>
             <field name="school_id" ref="demo_school_1"/>
             <field name="country_id" ref="base.au"/>
             <field name="city">Adelaide</field>
@@ -826,4 +826,3 @@
         </record>
     </data>
 </odoo>
-

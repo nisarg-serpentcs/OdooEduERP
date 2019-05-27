@@ -87,9 +87,6 @@ class StudentStudent(models.Model):
             vals.update(company_vals)
         if vals.get('email'):
             school.emailvalidation(vals.get('email'))
-        record = self.search([('roll_no', '=', vals.get('roll_no')), ('standard_id', '=', vals.get('standard_id'))], limit=1)
-        if record.id:
-            raise ValidationError(_('Student Roll Numer. must be unique.!'))
         res = super(StudentStudent, self).create(vals)
         teacher = self.env['school.teacher']
         for data in res.parent_id:
@@ -118,10 +115,6 @@ class StudentStudent(models.Model):
                                                '=', parent)])
                 for data in teacher_rec:
                     data.write({'student_id': [(4, self.id)]})
-        rec = self.search([('standard_id', '=', self.standard_id.id),
-                           ('roll_no', '=', vals.get('roll_no'))], limit=1)
-        if rec.id:
-            raise ValidationError(_('Student Roll Numer. must be unique.!'))
         return super(StudentStudent, self).write(vals)
 
     @api.model
@@ -272,7 +265,7 @@ class StudentStudent(models.Model):
     teachr_user_grp = fields.Boolean("Teacher Group",
                                      compute="_compute_teacher_user",
                                      )
-    _sql_constraints = [('roll_no_key', 'UNIQUE (roll_no)',  'Student Roll Numer. must be unique.!')]
+    _sql_constraints = [('roll_no_key', 'UNIQUE (roll_no,standard_id,school_id)',  'Student Roll Numer. must be unique.!')]
 
     @api.multi
     def set_to_draft(self):
