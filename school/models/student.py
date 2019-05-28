@@ -30,9 +30,10 @@ class StudentStudent(models.Model):
     def _compute_full_name(self):
         for rec in self:
             partner_name = ""
-            partner_name += rec.stu_name if rec.stu_name else ""
-            partner_name += " " + rec.middle if rec.middle else ""
-            partner_name += " " + rec.last if rec.last else ""
+            partner_name += rec.stu_name
+            if rec.middle:
+                partner_name += " " + rec.middle
+            partner_name += " " + rec.last
             rec.full_name = partner_name
 
     @api.model
