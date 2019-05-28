@@ -152,7 +152,6 @@ class SchoolEvaluationTemplate(models.Model):
                             'User Type', required=True, default='faculty',
                             help="Type of Evaluation")
     rating_line_ids = fields.Many2many('rating.rating', 'rating')
-    rating_line = fields.One2many('rating.rating', 'rating_id', 'Rating')
 
 
 class RatingRating(models.Model):
