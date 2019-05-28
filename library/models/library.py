@@ -727,7 +727,7 @@ class LibraryBookRequest(models.Model):
         book_issue_obj = self.env['library.book.issue']
         curr_dt = datetime.now()
         new_date = datetime.strftime(curr_dt,
-                                     DEFAULT_SERVER_DATE_FORMAT)
+                                     DEFAULT_SERVER_DATETIME_FORMAT)
         vals = {}
         if (new_date >= self.card_id.start_date and
                 new_date <= self.card_id.end_date):
