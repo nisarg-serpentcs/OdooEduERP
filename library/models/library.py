@@ -155,7 +155,7 @@ class LibraryCard(models.Model):
         '''Schedular to change in librarycard state when end date
             is over'''
         current_date = datetime.now()
-        new_date = datetime.strftime(current_date, '%m/%d/%Y')
+        new_date = datetime.strftime(current_date, DEFAULT_SERVER_DATE_FORMAT)
         lib_card = self.env['library.card']
         lib_card_search = lib_card.search([('end_date', '<',
                                             new_date)])
@@ -225,9 +225,9 @@ class LibraryBookIssue(models.Model):
         for line in self:
             if line.date_return:
                 start_day = datetime.strptime(line.actual_return_date,
-                                              "%Y-%m-%d %H:%M:%S")
+                                              DEFAULT_SERVER_DATETIME_FORMAT)
                 end_day = datetime.strptime(line.date_return,
-                                            "%Y-%m-%d %H:%M:%S")
+                                            DEFAULT_SERVER_DATETIME_FORMAT)
                 if start_day > end_day:
                     diff = rd(start_day.date(), end_day.date())
                     day = float(diff.days) or 0.0
@@ -309,7 +309,7 @@ class LibraryBookIssue(models.Model):
     actual_return_date = fields.Datetime("Actual Return Date",
                                          help="Actual Return Date of Book",
                                          default=lambda *
-                                         a: time.strftime('%Y-%m-%d %H:%M:%S'))
+                                         a: time.strftime(DEFAULT_SERVER_DATETIME_FORMAT))
     penalty = fields.Float(compute="_compute_penalty",
                            string='Penalty', store=True,
                            help='It show the late book return penalty')
