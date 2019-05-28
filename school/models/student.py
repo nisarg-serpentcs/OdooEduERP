@@ -266,7 +266,7 @@ class StudentStudent(models.Model):
     teachr_user_grp = fields.Boolean("Teacher Group",
                                      compute="_compute_teacher_user",
                                      )
-    _sql_constraints = [('roll_no_key', 'UNIQUE (roll_no,standard_id,school_id)',  'Student Roll Numer. must be unique.!')]
+    _sql_constraints = [('roll_no_key', 'UNIQUE (roll_no,standard_id,school_id)',  'Student Roll Number. must be unique.!')]
 
     @api.multi
     def set_to_draft(self):
