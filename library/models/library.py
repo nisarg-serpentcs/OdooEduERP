@@ -695,6 +695,17 @@ class LibraryBookRequest(models.Model):
     active = fields.Boolean(default=True, help='''Set active to false to hide
     the category without removing it.''')
 
+    @api.constrains('card_id', 'name')
+    def check_book_request(self):
+        book_request = self.search([('card_id', '=', self.card_id.id),
+                                    ('name', '=', self.name.id),
+                                    ('id', 'not in', self.ids),
+                                    ('type', '=', 'existing')])
+        if book_request:
+            raise ValidationError(_('''You cannot request same book on same
+                                    card number more than once at same time!'''
+                                    ))
+
     @api.model
     def create(self, vals):
         res = super(LibraryBookRequest, self).create(vals)
