@@ -301,7 +301,7 @@ class LibraryBookIssue(models.Model):
     date_issue = fields.Datetime('Release Date', required=True,
                                  help="Release(Issue) date of the book",
                                  default=lambda *a:
-                                 time.strftime('%Y-%m-%d %H:%M:%S'))
+                                 time.strftime(DEFAULT_SERVER_DATETIME_FORMAT))
     date_return = fields.Datetime(compute="_compute_return_date",
                                   string='Return Date',
                                   store=True,
@@ -452,7 +452,7 @@ class LibraryBookIssue(models.Model):
 
         curr_dt = datetime.now()
         new_date = datetime.strftime(curr_dt,
-                                     '%m/%d/%Y')
+                                     DEFAULT_SERVER_DATE_FORMAT)
         if (self.card_id.end_date < new_date and
                 self.card_id.end_date > new_date):
                 raise ValidationError(_('''The Membership of library
@@ -501,7 +501,7 @@ class LibraryBookIssue(models.Model):
         @return : True
         '''
         self.write({'state': 'reissue',
-                    'date_issue': time.strftime('%Y-%m-%d %H:%M:%S')})
+                    'date_issue': time.strftime(DEFAULT_SERVER_DATETIME_FORMAT)})
 
     @api.multi
     def return_book(self):
@@ -727,7 +727,7 @@ class LibraryBookRequest(models.Model):
         book_issue_obj = self.env['library.book.issue']
         curr_dt = datetime.now()
         new_date = datetime.strftime(curr_dt,
-                                     '%m/%d/%Y')
+                                     DEFAULT_SERVER_DATE_FORMAT)
         vals = {}
         if (new_date >= self.card_id.start_date and
                 new_date <= self.card_id.end_date):
